@@ -1,9 +1,12 @@
 import hashlib
 from datetime import datetime
 
-from flask import current_app
+from flask import current_app, g, url_for
 from flask_login import AnonymousUserMixin, UserMixin
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from werkzeug.security import check_password_hash, generate_password_hash
+
+from app.exceptions import ValidationError
 
 from . import db, login_manager
 
@@ -87,6 +90,11 @@ class Role(db.Model):
 
 
 class User(UserMixin, db.Model):
+    """
+    UserMixin class that has default implementations of is_authenticated, is_active,
+    is_anonymous, get_id(), etc that are appropriate for most cases.
+    """
+
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
@@ -155,6 +163,63 @@ class User(UserMixin, db.Model):
             url=url, hash=hash, size=size, default=default, rating=rating
         )
 
+    # An expiration time given in seconds is also used to generate token.
+    # Here token is decoded using id of the user.
+    def generate_auth_token(self, expiration):
+        s = Serializer(current_app.config["SECRET_KEY"], expires_in=expiration)
+        return s.dumps({"id": self.id}).decode("utf-8")
+
+    # This is a static method, as the user will be known only after the token is decoded.
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(current_app.config["SECRET_KEY"])
+        try:
+            data = s.loads(token)
+        except:
+            return None
+        return User.query.get(data["id"])
+
+    def to_json(self):
+        json_user = {
+            "url": url_for("api.get_user", id=self.id),
+            "full-url": url_for("api.get_user", id=self.id, _external=True),
+            "username": self.username,
+            "email": self.email,
+            "member_since": self.member_since,
+            "last_seen": self.last_seen,
+            "current_user_username": g.current_user.username,
+            "profile_name": self.name,
+        }
+        return json_user
+
+    @staticmethod
+    def from_json(json_user):
+        # check username exist in database
+        email = json_user.get("email")
+        if email is None or email == "":
+            raise ValidationError("please provide valid email address")
+        else:
+            user = User.query.filter_by(email=email).first()
+            if user:
+                raise ValidationError("email exist in database")
+        # check username exist in database
+        username = json_user.get("username")
+        if username is None or username == "":
+            raise ValidationError("please provide valid username")
+        else:
+            user = User.query.filter_by(username=username).first()
+            if user:
+                raise ValidationError("username exist in database")
+        # check id exist in database
+        id = json_user.get("id")
+        if id is None or id == "":
+            raise ValidationError("please provide valid user id")
+        else:
+            user = User.query.filter_by(id=id).first()
+            if user:
+                raise ValidationError("user id exist in database")
+        return User(email=email, username=username, id=id)
+
 
 # Role Verification: evaluating whether a user has a given permission
 class AnonymousUser(AnonymousUserMixin):
@@ -170,6 +235,11 @@ Role Verification: Flask-Login is told to use the application’s custom anonymo
 by setting its class in the login_manager.anonymous_user attribute.
 """
 login_manager.anonymous_user = AnonymousUser
+
+"""
+The user identifier will be passed as a string, so the function converts it to
+an integer before it passes it to the Flask-SQLAlchemy query that loads the user.
+"""
 
 
 @login_manager.user_loader

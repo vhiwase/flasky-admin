@@ -27,7 +27,7 @@ repos:
           "--max-line-length=89",
           "--max-complexity=18",
           "--config=setup.cfg",
-        #   "--ignore=E501"
+          "--ignore=E722, B001, W503"
         ]
       exclude: __init__.py
       additional_dependencies: [

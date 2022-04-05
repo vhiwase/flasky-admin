@@ -31,6 +31,7 @@
             <p>Role: {{ user.role.name }}</p>
             <p>Verified: {{ user.confirmed }}</p>
             <p>Real Name: {{  user.name  }}</p>
+            <p>User ID: {{  user.id  }}</p>
             <p>Date of Creation: {{  moment(user.member_since).calendar() }}</p>
             <p>Modified Date: {{  moment(user.last_seen).calendar()  }}</p>
         </div>

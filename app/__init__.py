@@ -10,7 +10,15 @@ bootstrap = Bootstrap()
 moment = Moment()
 db = SQLAlchemy()
 
+# Flask-Login is initialized in the application factory function.
 login_manager = LoginManager()
+"""
+The login_view attribute of the LoginManager object sets the endpoint
+for the login page. Flask-Login will redirect to the login page when
+an anonymous user tries to access a protected page. Because the login
+route is inside a blueprint, it needs to be prefixed with the blueprint
+name.
+"""
 login_manager.login_view = "auth.login"
 
 
@@ -32,6 +40,10 @@ def create_app(config_name):
     from .auth import auth as auth_blueprint
 
     app.register_blueprint(auth_blueprint, url_prefix="/auth")
+
+    from .api.v1 import api as api_blueprint
+
+    app.register_blueprint(api_blueprint, url_prefix="/api/v1")
 
     # attach routes and custom error pages here
 
