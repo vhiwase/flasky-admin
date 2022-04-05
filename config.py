@@ -7,6 +7,7 @@ class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or "hard to guess string"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     APP_ADMIN = os.environ.get("APP_ADMIN", "vaibhav@example.com")
+    FLASK_USERS_PER_PAGE = 5
 
     @staticmethod
     def init_app(app):

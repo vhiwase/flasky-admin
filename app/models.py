@@ -1,7 +1,7 @@
 import hashlib
 from datetime import datetime
 
-from flask import current_app, g, url_for
+from flask import current_app, url_for
 from flask_login import AnonymousUserMixin, UserMixin
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -9,6 +9,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app.exceptions import ValidationError
 
 from . import db, login_manager
+
+# from flask import g
 
 
 # permission constants
@@ -180,6 +182,8 @@ class User(UserMixin, db.Model):
         return User.query.get(data["id"])
 
     def to_json(self):
+        # Note : Do not use g.current_user.username in implementation of response.
+        # Unit test cases fails when using g.current_user.username
         json_user = {
             "url": url_for("api.get_user", id=self.id),
             "full-url": url_for("api.get_user", id=self.id, _external=True),
@@ -187,8 +191,12 @@ class User(UserMixin, db.Model):
             "email": self.email,
             "member_since": self.member_since,
             "last_seen": self.last_seen,
-            "current_user_username": g.current_user.username,
-            "profile_name": self.name,
+            "confirmed": self.confirmed,
+            "name": self.name,
+            "location": self.location,
+            "about_me": self.about_me,
+            "id": self.id
+            # 'current_user_username':  g.current_user.username,
         }
         return json_user
 
@@ -218,7 +226,19 @@ class User(UserMixin, db.Model):
             user = User.query.filter_by(id=id).first()
             if user:
                 raise ValidationError("user id exist in database")
-        return User(email=email, username=username, id=id)
+        confirmed = json_user.get("confirmed")
+        name = json_user.get("name")
+        location = json_user.get("location")
+        about_me = json_user.get("about_me")
+        return User(
+            email=email,
+            username=username,
+            id=id,
+            confirmed=confirmed,
+            name=name,
+            location=location,
+            about_me=about_me,
+        )
 
 
 # Role Verification: evaluating whether a user has a given permission

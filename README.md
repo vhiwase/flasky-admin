@@ -173,3 +173,38 @@ Following command will help to remove trailing-whitespace, check case conflict, 
 ```sh
 python3 pre-commit-2.15.0.pyz run  -a
 ```
+
+# Testing Web Services with HTTPie
+To test a web service, an HTTP client must be used. The two most used clients for testing Python web services from the command line are cURL and HTTPie. While both are useful tools, the latter has a much more concise and readable command line syntax that is tailored specifically to API requests.
+
+Assuming the development server is running on the default http://127.0.0.1:5000 address, a GET request can be issued from another terminal window as follows:
+
+```sh
+http --json --auth vaibhav@example.com:admin123 GET http://127.0.0.1:5000/api/v1/users/
+```
+```sh
+http --json --auth vaibhav@example.com:admin123 GET http://127.0.0.1:5000/api/v1/users_per_page/
+```
+```sh
+http --json --auth vaibhav@example.com:admin123 GET http://127.0.0.1:5000/api/v1/users_per_page/?page=2
+```
+```sh
+http --json --auth vaibhav@example.com:admin123 GET http://127.0.0.1:5000/api/v1/users/5
+```
+```sh
+http --json --auth vaibhav@example.com:admin123 POST http://127.0.0.1:5000/api/v1/tokens/
+```
+```sh
+http --json --auth eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0OTE4NjY4NiwiZXhwIjoxNjQ5MTkwMjg2fQ.eyJpZCI6Mn0.FU1FX7GTn67e97pRTB78my5xqtu3PXFF8c4KoiYrrB7fzkGvMjUSw8Dy2oSlZnmnzTrzPkIj6K0UJixzY_WXag: GET http://127.0.0.1:5000/api/v1/users/5
+```
+```sh
+http --json --auth eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0OTE4NjY4NiwiZXhwIjoxNjQ5MTkwMjg2fQ.eyJpZCI6Mn0.FU1FX7GTn67e97pRTB78my5xqtu3PXFF8c4KoiYrrB7fzkGvMjUSw8Dy2oSlZnmnzTrzPkIj6K0UJixzY_WXag: GET http://127.0.0.1:5000/api/v1/users/
+```
+```sh
+http --json --auth eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0OTE4NjY4NiwiZXhwIjoxNjQ5MTkwMjg2fQ.eyJpZCI6Mn0.FU1FX7GTn67e97pRTB78my5xqtu3PXFF8c4KoiYrrB7fzkGvMjUSw8Dy2oSlZnmnzTrzPkIj6K0UJixzY_WXag: GET http://127.0.0.1:5000/api/v1/users_per_page/
+```
+```sh
+http --json --auth eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0OTE4NjY4NiwiZXhwIjoxNjQ5MTkwMjg2fQ.eyJpZCI6Mn0.FU1FX7GTn67e97pRTB78my5xqtu3PXFF8c4KoiYrrB7fzkGvMjUSw8Dy2oSlZnmnzTrzPkIj6K0UJixzY_WXag: GET http://127.0.0.1:5000/api/v1/users_per_page/?page=2
+```
+
+
