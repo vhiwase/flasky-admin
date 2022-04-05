@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Show Profiles{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Show Profiles</h1>
+</div>
+<ul class="profiles">
+    {% for user in users %}
+    <li class="profile">
+        <div class="profile-thumbnail">
+            <a href="{{ url_for('main.user', username=user.username) }}">
+                <img class="img-rounded profile-thumbnail"
+                    src="{{ user.gravatar(size=40) }}">
+            </a>
+        </div>
+        <div class="profile-date">{{ moment(user.member_since).fromNow() }}</div>
+        <div class="profile-name">
+            <a href="{{ url_for('main.user', username=user.username) }}">
+                {{ user.username }}
+            </a>
+        </div>
+        <div class="profile-delete">
+            <a class="btn btn-danger" href="{{ url_for('main.delete_profile_admin', id=user.id) }}">Delete Profile</a>
+        </div>
+        <div class="profile-details">
+            <p>Email: {{ user.email }}</p>
+            <p>Username: {{ user.username }}</p>
+            <p>Role: {{ user.role.name }}</p>
+            <p>Verified: {{ user.confirmed }}</p>
+            <p>Real Name: {{  user.name  }}</p>
+            <p>Date of Creation: {{  moment(user.member_since).calendar() }}</p>
+            <p>Modified Date: {{  moment(user.last_seen).calendar()  }}</p>
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}
