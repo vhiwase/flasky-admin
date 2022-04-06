@@ -46,6 +46,85 @@
 					"response": []
 				},
 				{
+					"name": "get users per page",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "vaibhav@example.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/users_per_page?page=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"users_per_page"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get users",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "vaibhav@example.com",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get token",
 					"event": [
 						{
@@ -78,7 +157,7 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:5000/api/v1/tokens?",
+							"raw": "http://localhost:5000/api/v1/tokens/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -87,13 +166,8 @@
 							"path": [
 								"api",
 								"v1",
-								"tokens"
-							],
-							"query": [
-								{
-									"key": "",
-									"value": null
-								}
+								"tokens",
+								""
 							]
 						}
 					},
@@ -131,6 +205,137 @@
 								"v1",
 								"users",
 								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get users from token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{token}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"users",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add_new_user_access_admin",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "admin123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "vaibhav@example.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"vaibhav2253@example.com\",\r\n    \"username\": \"vaibhav2253\",\r\n    \"id\": 62,\r\n    \"confirmed\": true,\r\n    \"about_me\": \"user\",\r\n    \"location\": \"jaipur\",\r\n    \"name\": \"Vaibhav\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/add_new_user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"add_new_user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add_new_user_access_user",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "vaibhav22@example.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"vaibhav22@example.com\",\r\n    \"username\": \"vaibhav22\",\r\n    \"id\": 55\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/add_new_user/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"add_new_user",
+								""
 							]
 						}
 					},
