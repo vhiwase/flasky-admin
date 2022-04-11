@@ -97,6 +97,15 @@ Let's add the new roles to your development database in a shell session:
 >>> Role.insert_roles()
 >>> Role.query.all()
 [<Role 'Administrator'>, <Role 'User'>, <Role 'Moderator'>]
+>>> User.query.all()
+[]
+>>> user_vaibhav = User(email='vaibhav@example.com', username='vaibhav', password='admin123')
+>>> user_vaibhav.role
+<Role 'Administrator'>
+>>> db.session.add_all([user_vaibhav])
+>>> db.session.commit()
+>>> User.query.all()
+[<User 'vaibhav'>]
 ```
 
 Let's create some users. Note that default value of APP_ADMIN is set as ```vaibhav@example.com``` on ```config.py``` for development purpose.
@@ -104,7 +113,6 @@ Let's create some users. Note that default value of APP_ADMIN is set as ```vaibh
 (venv) $ flask shell
 
 >>> user_john = User(email='john@example.com', username='john', password='cat')
->>> user_vaibhav = User(email='vaibhav@example.com', username='vaibhav', password='admin123')
 ```
 
 Although it is not necessary, it is also a good idea to update the user list so that all the user accounts that were created before roles and permissions existed have a role assigned. You can run the following code in a Python shell to perform this update:
@@ -134,7 +142,7 @@ Let's check the permissions.
 
 To write the objects to the database, the session needs to be committed by calling its commit() method:
 ```sh
->>> db.session.add_all([user_vaibhav, user_john])
+>>> db.session.add_all([user_john])
 >>> db.session.commit()
 ```
 

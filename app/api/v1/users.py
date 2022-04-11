@@ -48,12 +48,12 @@ def new_user():
         {"Location": url_for("api.get_user", id=user.id)},
     )
 
-
 @api.route("/users_per_page/")
 def get_users_per_page():
+    per_page = current_app.config["FLASK_USERS_PER_PAGE"]
     page = request.args.get("page", 1, type=int)
     pagination = User.query.paginate(
-        page, per_page=current_app.config["FLASK_USERS_PER_PAGE"], error_out=False
+        page, per_page=per_page, error_out=False
     )
     users = pagination.items
     prev = None

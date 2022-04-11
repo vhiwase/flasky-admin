@@ -3,6 +3,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 
 from ..models import User
 from . import auth
+from .. import db
 from .forms import LoginForm
 
 
@@ -10,6 +11,18 @@ from .forms import LoginForm
 def before_request():
     if current_user.is_authenticated:
         current_user.ping()
+        if not current_user.confirmed \
+                and request.endpoint \
+                and request.blueprint != 'auth' \
+                and request.endpoint != 'static':
+            return redirect(url_for('auth.unconfirmed'))
+
+
+@auth.route('/unconfirmed')
+def unconfirmed():
+    if current_user.is_anonymous or current_user.confirmed:
+        return redirect(url_for('main.index'))
+    return render_template('auth/unconfirmed.html')
 
 
 @auth.route("/login", methods=["GET", "POST"])
@@ -36,3 +49,16 @@ def logout():
     logout_user()
     flash("You have been logged out.")
     return redirect(url_for("main.index"))
+
+
+@auth.route('/confirm/<token>')
+@login_required
+def confirm(token):
+    if current_user.confirmed:
+        return redirect(url_for('main.index'))
+    if current_user.confirm(token):
+        db.session.commit()
+        flash('You have confirmed your account. Thanks!')
+    else:
+        flash('The confirmation link is invalid or has expired.')
+    return redirect(url_for('main.index'))
