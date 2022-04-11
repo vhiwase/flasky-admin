@@ -165,6 +165,11 @@ The unit tests can be executed as follows:
 ```sh
 (venv) $ flask test
 ```
+Code coverage tools measure how much of the application is exercised by unit tests and can provide a detailed report that indicates which parts of the application code are not being tested.
+```sh
+>>> flask test --coverage
+```
+
 # Running the Application
 The application as usual:
 ```sh
