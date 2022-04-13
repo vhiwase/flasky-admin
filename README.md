@@ -221,7 +221,6 @@ http --json --auth eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0OTE4NjY4NiwiZXhwIjoxNjQ5MTkwM
 ```
 
 # Source Code Profiling
-
 Another possible source of performance problems is high CPU consumption, caused by functions that perform heavy computing. Source code profilers are useful in finding the slowest parts of an application. A profiler watches a running application and records the functions that are called and how long each takes to run. It then produces a detailed report showing the slowest functions.
 
 Profiling is typically done only in a development environment. A source code profiler makes the application run much slower than normal, because it has to observe and take notes on all that is happening in real time. Profiling on a production system is not recommended, unless a lightweight profiler specifically designed to run in a production environment is used.
