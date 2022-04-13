@@ -220,4 +220,28 @@ http --json --auth eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0OTE4NjY4NiwiZXhwIjoxNjQ5MTkwM
 http --json --auth eyJhbGciOiJIUzUxMiIsImlhdCI6MTY0OTE4NjY4NiwiZXhwIjoxNjQ5MTkwMjg2fQ.eyJpZCI6Mn0.FU1FX7GTn67e97pRTB78my5xqtu3PXFF8c4KoiYrrB7fzkGvMjUSw8Dy2oSlZnmnzTrzPkIj6K0UJixzY_WXag: GET http://127.0.0.1:5000/api/v1/users_per_page/?page=2
 ```
 
+# Source Code Profiling
 
+Another possible source of performance problems is high CPU consumption, caused by functions that perform heavy computing. Source code profilers are useful in finding the slowest parts of an application. A profiler watches a running application and records the functions that are called and how long each takes to run. It then produces a detailed report showing the slowest functions.
+
+Profiling is typically done only in a development environment. A source code profiler makes the application run much slower than normal, because it has to observe and take notes on all that is happening in real time. Profiling on a production system is not recommended, unless a lightweight profiler specifically designed to run in a production environment is used.
+
+When the application is started with ```flask profile``` which is replaced by ```python manage.py```, the console will show the profiler statistics for each request, which will include the slowest 25 functions. The ```--length``` option can be used to change the number of functions shown in the report. If the ```--profile-dir``` option is given, the profile data for each request is saved to a file in the given directory. The profiler data files can be used to generate more detailed reports that include a call graph. 
+
+Below command is working in older version of [flask](https://github.com/pallets/flask/pull/2781). Some other solutions are [here](https://github.com/pallets/flask/issues/2776)
+
+```sh
+(venv) $ flask profile
+Warning: Silently ignoring app.run() because the application is run from the flask command line executable.  Consider putting app.run() behind an if __name__ == "__main__" guard to silence this warning.
+  app.run(debug=False)
+```
+Alternatively we can still run as follows
+
+```sh
+(venv) $ python manage.py
+```
+Or with some optional parameters as given below:
+
+```sh
+(venv) $ python manage.py --length=25 --profile-dir=profile_dir
+```

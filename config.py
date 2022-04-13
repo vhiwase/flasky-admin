@@ -8,6 +8,8 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     APP_ADMIN = os.environ.get("APP_ADMIN", "vaibhav@example.com")
     FLASK_USERS_PER_PAGE = 5
+    SQLALCHEMY_RECORD_QUERIES = True
+    FLASK_SLOW_DB_QUERY_TIME = 0.5
 
     @staticmethod
     def init_app(app):
