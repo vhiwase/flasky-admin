@@ -137,3 +137,5 @@ packagename.egg-info/
 # database
 data-dev.sqlite
 data.sqlite
+dev-error.log
+test-error.log

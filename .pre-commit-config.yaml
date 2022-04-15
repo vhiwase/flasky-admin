@@ -29,7 +29,7 @@ repos:
           "--config=setup.cfg",
           "--ignore=E722, B001, W503"
         ]
-      exclude: __init__.py
+      exclude: __init__.py|manage.py|config.py|env.py
       additional_dependencies: [
           flake8-print, pep8-naming, flake8-alfred, flake8-bugbear, flake8-todo, pydocstyle, Pygments,
           # flake8-builtins,flake8-comprehensions, flake8-pytest-style, flake8-docstrings, flake8-eradicate, flake8-unused-arguments,

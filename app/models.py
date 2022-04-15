@@ -138,26 +138,26 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.password_hash, password)
-    
-    # The generate_confirmation_token() method generates a token with 
+
+    # The generate_confirmation_token() method generates a token with
     # a default validity time of one hour
     def generate_confirmation_token(self, expiration=3600):
-        s = Serializer(current_app.config['SECRET_KEY'], expiration)
-        return s.dumps({'confirm': self.id}).decode('utf-8')
+        s = Serializer(current_app.config["SECRET_KEY"], expiration)
+        return s.dumps({"confirm": self.id}).decode("utf-8")
 
-    # The confirm() method verifies the token and, if valid, sets 
+    # The confirm() method verifies the token and, if valid, sets
     # the new confirmed attribute in the user model to True. In addition
     # to verifying the token, the confirm() function checks that the id
     # from the token matches the logged-in user, which is stored in
-    # current_user. This ensures that a confirmation token for a given 
+    # current_user. This ensures that a confirmation token for a given
     # user cannot be used to confirm a different user.
     def confirm(self, token):
-        s = Serializer(current_app.config['SECRET_KEY'])
+        s = Serializer(current_app.config["SECRET_KEY"])
         try:
-            data = s.loads(token.encode('utf-8'))
+            data = s.loads(token.encode("utf-8"))
         except:
             return False
-        if data.get('confirm') != self.id:
+        if data.get("confirm") != self.id:
             return False
         self.confirmed = True
         db.session.add(self)

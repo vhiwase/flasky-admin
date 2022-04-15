@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from flask import flash, redirect, render_template, session, url_for, current_app
+from flask import current_app, flash, redirect, render_template, session, url_for
 from flask_login import current_user, login_required
 from flask_sqlalchemy import get_debug_queries
 
@@ -10,21 +10,23 @@ from ..models import Role, User
 from . import main
 from .forms import AddProfileAdminForm, EditProfileAdminForm, EditProfileForm, NameForm
 
+
 # Logging Slow Database Performance
 @main.after_app_request
 def after_request(response):
     for query in get_debug_queries():
-        if query.duration >= current_app.config['FLASK_SLOW_DB_QUERY_TIME']:
+        if query.duration >= current_app.config["FLASK_SLOW_DB_QUERY_TIME"]:
             current_app.logger.warning(
-                'Slow query: %s\nParameters: %s\nDuration: %fs\nContext: %s\n' %
-                    (query.statement, query.parameters, query.duration,
-                     query.context))
+                "Slow query: %s\nParameters: %s\nDuration: %fs\nContext: %s\n"
+                % (query.statement, query.parameters, query.duration, query.context)
+            )
     return response
 
 
 @main.route("/", methods=["GET", "POST"])
 @login_required
 def index():
+    current_app.logger.warning("current_app.logger.warning")
     form = NameForm()
     if form.validate_on_submit():
         # name = form.name.data

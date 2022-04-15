@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  web-app:
+    build: .
+    container_name: web-app
+    ports:
+      - "8000:5000"
+    volumes:
+      - app-volume:/usr/src/app
+    env_file: .env
+    links:
+      - mysql:dbserver
+    restart: always
+    depends_on:
+      - mysql
+  mysql:
+    image: "mysql/mysql-server:5.7"
+    container_name: mysql
+    volumes:
+      - app-volume:/usr/src/app
+    env_file: .env-mysql
+    restart: always
+
+volumes:
+  app-volume:
+    name: app-volume-001
