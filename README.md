@@ -109,7 +109,7 @@ The Gunicorn web server does not work on Microsoft Windows. We can use [Waitress
 To start the Waitress web server, use the waitress-serve command:
 ```sh
 (venv) $ pip install -r requirements/local.txt
-(venv) $ waitress-serve --port 8000 flasky:app
+(venv) $ waitress-serve --port 8000 manage:app
 ```
 
 There are many ways to generate random strings that are appropriate to be used as secret keys. You can do so with Python as follows:
@@ -154,15 +154,15 @@ Simple steps on local env are as follows:
 To expose the database migration commands, Flask-Migrate adds a ```flask db``` command with several subcommands. When you work on a new project, you can add support for database migrations with the ```init``` subcommand:
 ```sh
 (venv) $ flask db init
-  Creating directory /home/flask/flasky/migrations...done
-  Creating directory /home/flask/flasky/migrations/versions...done
-  Generating /home/flask/flasky/migrations/alembic.ini...done
-  Generating /home/flask/flasky/migrations/env.py...done
-  Generating /home/flask/flasky/migrations/env.pyc...done
-  Generating /home/flask/flasky/migrations/README...done
-  Generating /home/flask/flasky/migrations/script.py.mako...done
+  Creating directory <project_directory>/migrations...done
+  Creating directory <project_directory>/migrations/versions...done
+  Generating <project_directory>/migrations/alembic.ini...done
+  Generating <project_directory>/migrations/env.py...done
+  Generating <project_directory>/migrations/env.pyc...done
+  Generating <project_directory>/migrations/README...done
+  Generating <project_directory>/migrations/script.py.mako...done
   Please edit configuration/connection/logging settings in
-  '/home/flask/flasky/migrations/alembic.ini' before proceeding.
+  '<project_directory>/migrations/alembic.ini' before proceeding.
 ```
 
 Regardless of the source of the database URL, the database tables must be created for the new database. When working with Flask-Migrate to keep track of migrations, database tables can be created or upgraded to the latest revision with a single command:
