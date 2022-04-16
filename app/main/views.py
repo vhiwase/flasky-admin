@@ -26,7 +26,6 @@ def after_request(response):
 @main.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    current_app.logger.warning("current_app.logger.warning")
     form = NameForm()
     if form.validate_on_submit():
         # name = form.name.data

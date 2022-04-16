@@ -7,6 +7,8 @@ Spin up the containers:
 docker-compose up -d --build -V
 ```
 
+```boot.sh``` script that starts the ```web-app``` container at [http://localhost:5000/](http://localhost:5000/) from gunicorn and can be made more robust by retrying the ```flask deploy``` command, which retries the database upgrade until it succeeds. When project is running first time initially we have to call ```flask dropdeploy``` which delete all data and create a fresh tables in database with verified/confirmed admin access for username ```vaibhav@example.com``` and password ```admin123```
+
 Show logs from worker containers:
 ```sh
 docker-compose logs --tail=0 -f worker
@@ -110,6 +112,19 @@ To start the Waitress web server, use the waitress-serve command:
 ```sh
 (venv) $ pip install -r requirements/local.txt
 (venv) $ waitress-serve --port 8000 manage:app
+```
+This command will run the complete application on [http://localhost:8000/](http://localhost:8000/)
+
+Following commad is expected to create the database for first time
+```sh
+(venv) $ flask dropdeploy
+```
+
+ ```flask dropdeploy``` which delete all data and create a fresh tables in database with admin access for username ```vaibhav@example.com``` and password ```admin123```
+
+Following commad is required to upgrade the existing database
+```sh
+(venv) $ flask deploy
 ```
 
 There are many ways to generate random strings that are appropriate to be used as secret keys. You can do so with Python as follows:
