@@ -11,7 +11,7 @@ docker-compose up -d --build -V
 
 Show logs from worker containers:
 ```sh
-docker-compose logs --tail=0 -f worker
+docker-compose logs --tail=0 -f web-app
 ```
 
 Spin down the containers:
